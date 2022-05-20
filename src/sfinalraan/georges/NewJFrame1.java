@@ -5,6 +5,13 @@
  */
 package sfinalraan.georges;
 
+import java.awt.Color;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Admin
@@ -12,12 +19,17 @@ package sfinalraan.georges;
 public class NewJFrame1 extends javax.swing.JFrame {
 
     String defaultText = "Home ARM";
+    String speedDial;
+    ConnectDB db;
+    Statement st;
 
     /**
      * Creates new form NewJFrame1
      */
     public NewJFrame1() {
         initComponents();
+	db = new ConnectDB();
+        st =db.getStatement();
     }
 
     /**
@@ -193,11 +205,12 @@ public class NewJFrame1 extends javax.swing.JFrame {
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5)
-                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton5)
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton8)
@@ -326,7 +339,21 @@ public class NewJFrame1 extends javax.swing.JFrame {
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         // TODO dial button:
-        
+        speedDial = jTextField1.getText();
+	String query = "select `name` from `PHONEBOOK` where `id`=" + speedDial;
+	String query2 = "select `phone` from `PHONEBOOK` where `id`=" + speedDial;
+	try {
+            ResultSet rs = st.executeQuery(query);
+	    if(rs.next() == true) {
+		ResultSet rs2 = st.executeQuery(query2);
+		jLabel1.setText("contacting "+rs.getString("name")+" at "+rs2.getString("phone"));
+        } else {
+            jLabel1.setText("invalid number");
+        }
+	    
+	}catch(Exception e) {
+        System.out.println(e);
+	}
     }//GEN-LAST:event_jButton14ActionPerformed
 
     /**
