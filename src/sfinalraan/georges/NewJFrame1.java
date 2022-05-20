@@ -351,7 +351,7 @@ public class NewJFrame1 extends javax.swing.JFrame {
             jLabel1.setText("invalid number");
         }
 	    
-	}catch(Exception e) {
+	} catch(Exception e) {
         System.out.println(e);
 	}
     }//GEN-LAST:event_jButton14ActionPerformed
